@@ -40,8 +40,7 @@
                         style="opacity: 0.8;">
                         Detail
                     </button>
-
-
+                    <a href="{{route('cart', $product->id)}}" class="btn btn-primary text-white">Add Cart</a>
                 </div>
             </div>
             @endforeach
@@ -63,7 +62,9 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <img id="modalImage" src="" alt="Product Image" class="img-fluid mb-3 rounded">
+                <div class="d-flex justify-content-center align-items-center">
+                    <img id="modalImage" src="" alt="Product Image" class="img-fluid mb-3 rounded">
+                </div>
                 <h5 id="modalTitle"></h5>
                 <p id="modalDescription"></p>
                 <ul class="list-group">
@@ -74,8 +75,8 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                <a href="#" class="btn btn-primary">Add Cart</a>
             </div>
         </div>
     </div>

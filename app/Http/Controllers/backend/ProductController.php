@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -139,4 +140,24 @@ class ProductController extends Controller
         return view('backend.product.index')
             ->with('products', $products);
     }
+
+    public function add_cart($id)
+    {
+        $product_id = $id;
+        $user = Auth::user();
+        $user_id = $user->id;
+
+        $cart = new Cart();
+
+        $cart->user_id = $user_id;
+        $cart->product_id = $product_id;
+
+        $cart->save();
+
+        toastr()->timeOut(3000)->success('Product added to the cart successfully!');
+
+        return redirect()->back();
+
+    }
+
 }

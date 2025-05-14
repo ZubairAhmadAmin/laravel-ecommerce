@@ -31,3 +31,7 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
 
 });
 
+Route::get('/cart/{id}', [ProductController::class, 'add_cart'])->middleware(['auth', 'verified'])->name('cart');
+Route::get('/mycart', [HomeController::class, 'mycart'])->middleware(['auth', 'verified'])->name('mycart');
+Route::post('/confirm_order', [HomeController::class, 'confirm_order'])->middleware(['auth', 'verified'])->name('confirm-order');
+
