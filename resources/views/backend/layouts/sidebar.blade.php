@@ -19,5 +19,6 @@
                     <li><a href="{{route('products.create')}}">Add Product</a></li>
                 </ul>
             </li>
+            <li><a href="{{route('orders')}}"> <i class="icon-grid"></i>Orders </a></li>
         </ul>
     </nav>

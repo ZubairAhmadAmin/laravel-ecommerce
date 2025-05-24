@@ -5,9 +5,11 @@ namespace App\Http\Controllers\backend;
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Category;
+use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ProductController extends Controller
 {
@@ -158,6 +160,38 @@ class ProductController extends Controller
 
         return redirect()->back();
 
+    }
+
+    public function view_orders()
+    {
+        return view('backend.product.order')
+                    ->with('orders', Order::paginate(5));
+    }
+
+    public function on_the_way($id)
+    {
+        $order = Order::findOrfail($id);
+        $order->status = 'On The Way';
+        $order->save();
+
+        return redirect()->back();
+    }
+
+    public function delivered($id)
+    {
+        $order = Order::findOrfail($id);
+        $order->status = 'Delivered';
+        $order->save();
+
+        return redirect()->back();
+    }
+
+    public function print_pdf($id)
+    {
+        $order = Order::findOrfail($id);
+
+        $pdf = Pdf::loadView('backend.product.invoice', compact('order'));
+        return $pdf->download('invoice.pdf');                  
     }
 
 }

@@ -18,20 +18,19 @@
 
     <!-- start body content -->
     <div class="page-content">
-        @yield('content')
-        <footer class="footer">
-            <div class="footer__block block no-margin-bottom">
-                <div class="container-fluid text-center">
-                    <!-- Please do not remove the backlink to us unless you support us at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
-                    <p class="no-margin-bottom">2018 &copy; Your company. Download From <a target="_blank" href="https://templateshub.net">Templates Hub</a>.</p>
-                </div>
+        <div class="page-header">
+            <div class="container-fluid">
+                <h2 class="h5 no-margin-bottom">Dashboard</h2>
             </div>
-        </footer>
+        </div>
+        @include('backend.layouts.body')
     </div>
     <!-- end body content -->
 
+    @include('backend.layouts.footer')
+
     <!-- JavaScript files-->
-     @yield('script')
+    @yield('script')
     <script src="{{asset('backend/vendor/jquery/jquery.min.js')}}"></script>
     <script src="{{asset('backend/vendor/popper.js/umd/popper.min.js')}}"> </script>
     <script src="{{asset('backend/vendor/bootstrap/js/bootstrap.min.js')}}"></script>

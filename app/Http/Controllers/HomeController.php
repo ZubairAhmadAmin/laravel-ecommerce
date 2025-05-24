@@ -5,11 +5,21 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
+    public function index()
+    {
+        return view('backend.layouts.app')
+                    ->with('users', User::where('usertype', 'user')->get()->count())
+                    ->with('products', Product::all()->count())
+                    ->with('orders', Order::all()->count())
+                    ->with('delivered_orders', Order::where('status', 'Delivered')->count());
+    }
+
     public function home()
     {
         if(Auth::id())
@@ -58,29 +68,36 @@ class HomeController extends Controller
                     ->with('carts', $cart);
     }
 
-  public function confirm_order(Request $request)
-{
-    $name = $request->name;   
-    $address = $request->address;   
-    $phone = $request->phone;  
-    $user_id = Auth::id();
+    public function remove_cart_product($id)
+    {
+        $cart_product = Cart::findOrfail($id);
+        $cart_product->delete();
 
-    $carts = Cart::where('user_id', $user_id)->get();
-
-    foreach ($carts as $cart) {
-        $order = new Order();
-        $order->name = $name;
-        $order->address = $address;
-        $order->phone = $phone;
-        $order->user_id = $user_id;
-        $order->product_id = $cart->product_id;
-        $order->save();
-
-        $cart->delete(); // حذف مستقیم همان سبد
+        return redirect()->back();
     }
 
-    toastr()->timeOut(3000)->success('Cart added to order!');
-    return redirect()->back();
-}
+    public function confirm_order(Request $request)
+    {
+        $name = $request->name;
+        $address = $request->address;
+        $phone = $request->phone;
+        $user_id = Auth::id();
 
+        $carts = Cart::where('user_id', $user_id)->get();
+
+        foreach ($carts as $cart) {
+            $order = new Order();
+            $order->name = $name;
+            $order->address = $address;
+            $order->phone = $phone;
+            $order->user_id = $user_id;
+            $order->product_id = $cart->product_id;
+            $order->save();
+
+            $cart->delete();
+        }
+
+        toastr()->timeOut(3000)->success('Product Ordered Successfully!');
+        return redirect()->back();
+    }
 }

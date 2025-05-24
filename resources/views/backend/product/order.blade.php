@@ -19,39 +19,49 @@
     <!-- start body content -->
     <div class="page-content">
         <div class="row mr-5 ml-5">
-            <h2 class="text-white my-4">Products List
-                <a href="{{route('products.create')}}" class="btn btn-primary float-end mr-5">Add Product</a>
-            </h2>
-            <table class="table table-hover table table-dark">
+            <h2 class="text-white my-4">Orders List </h2>
+            <table class="table table-hover table table-dark table-bordered">
                 <thead>
                     <tr>
                         <th scope="col">No</th>
-                        <th scope="col">Image</th>
-                        <th scope="col">Title</th>
-                        <th scope="col">Category</th>
+                        <th scope="col">Customer Name</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">Phone</th>
+                        <th scope="col">Product Title</th>
                         <th scope="col">Price</th>
-                        <th scope="col">Quantity</th>
-                        <th scope="col">Action</th>
+                        <th scope="col">Image</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Change Status</th>
+                        <th scope="col">Download PDF</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($products as $index=>$product)
+                    @foreach($orders as $index=>$order)
                     <tr>
                         <td>{{$index + 1}}</td>
-                        <td><img src="{{asset('product/' . $product->image)}}" alt="{{$product->title}}" width="60" height="60" class="rounded"></td>
-                        <td>{{$product->title}}</td>
-                        <td>{{ $product->category ? $product->category->name : 'N/A' }}</td>
-                        <td>{{$product->price}}</td>
-                        <td>{{$product->quantity}}</td>
+                        <td>{{$order->name}}</td>
+                        <td>{{$order->address}}</td>
+                        <td>{{$order->phone}}</td>
+                        <td>{{$order->product->title}}</td>
+                        <td>{{$order->product->price}}</td>
+                        <td><img src="{{asset('product/' . $order->product->image)}}" alt="{{$order->product->title}}" width="60" height="60" class="rounded"></td>
                         <td>
-                            <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display: inline-block;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" onclick="confirmation(event)" style="border: none; background: none; color: red;">
-                                    <i class="fa fa-trash"></i>
-                                </button>
-                            </form>
-                            <a href="{{route('products.edit', $product->id)}}" style="border: none; background: none; color: blue;"><i class="fa fa-edit"></i></a>
+                            @if($order->status == 'In Progress')
+                            <span class="badge badge-primary">{{$order->status}}</span>
+                            @elseif($order->status == 'On The Way')
+                            <span class="badge badge-warning">{{$order->status}}</span>
+                            @else
+                            <span class="badge badge-success">{{$order->status}}</span>
+                            @endif
+                        </td>
+                        <td>
+                            <a href="{{route('on-the-way', $order->id)}}" class="btn btn-warning">On The Way</a>
+                            <a href="{{route('delivered', $order->id)}}" class="btn btn-success">Delivered</a>
+                        </td>
+                        <td>
+                            <a href="{{route('download', $order->id)}}">
+                                <i class="fa fa-download"></i>
+                            </a>
                         </td>
                     </tr>
                     @endforeach
@@ -59,7 +69,7 @@
             </table>
         </div>
         <div class="d-flex justify-content-center align-items-center mt-5">
-            {{$products->onEachSide(1)->links()}}
+            {{$orders->onEachSide(1)->links()}}
         </div>
 
         <!-- javascript for delete -->
