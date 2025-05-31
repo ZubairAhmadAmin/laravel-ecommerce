@@ -80,7 +80,7 @@
     </footer>
     <!-- footer section -->
 
-</section>
+</section> 
 
 <!-- end info section -->
 

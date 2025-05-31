@@ -10,7 +10,7 @@
 <body>
     <!-- start header -->
     @include('backend.layouts.header')
-    <!-- Search box -->
+    <!-- end header -->
 
     <!-- start sidebar navigation -->
     @include('backend.layouts.sidebar')
@@ -19,47 +19,35 @@
     <!-- start body content -->
     <div class="page-content">
         <div class="row mr-5 ml-5">
-                <div class=" d-flex align-items-center justify-content-between">
-                    <h2 class="text-white my-4">Products List</h2>
-                    <div class="form-group mb-0">
-                        <form action="{{route('product-search')}}" method="get">
-                            <input type="search" name="search" class="rounded text-bg-secondary pl-2" style="width: 300px; height: 42px;">
-                            <button type="submit" class="btn btn-primary mb-1">Search</button>
-                        </form>
-                    </div>
-                    <a href="{{route('products.create')}}" class="btn btn-primary float-end mr-5">Add Product</a>
-                </div>
-            </h2>
-            <table class="table table-hover table table-dark">
+            <h2 class="text-white my-4">Users List </h2>
+            <table class="table table-hover table table-dark table-bordered">
                 <thead>
                     <tr>
-                        <th scope="col">No</th>
-                        <th scope="col">Image</th>
-                        <th scope="col">Title</th>
-                        <th scope="col">Category</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Quantity</th>
+                        <th scope="col" class="px-3">No</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Phone</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">User Type</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($products as $index=>$product)
+                    @foreach($users as $index=>$user)
                     <tr>
-                        <td>{{$index + 1}}</td>
-                        <td><img src="{{asset('product/' . $product->image)}}" alt="{{$product->title}}" width="60" height="60" class="rounded"></td>
-                        <td>{{$product->title}}</td>
-                        <td>{{ $product->category ? $product->category->name : 'N/A' }}</td>
-                        <td>{{$product->price}}</td>
-                        <td>{{$product->quantity}}</td>
+                        <td class="px-3">{{$index + 1}}</td>
+                        <td>{{$user->name}}</td>
+                        <td>{{$user->email}}</td>
+                        <td>{{$user->phone}}</td>
+                        <td>{{$user->address}}</td>
+                        <td>{{$user->usertype}}</td>
                         <td>
-                            <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display: inline-block;">
+                            <form action="{{route('users.destroy', $user->id)}}" method="post" style="display: inline-block;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" onclick="confirmation(event)" style="border: none; background: none; color: red;">
-                                    <i class="fa fa-trash"></i>
-                                </button>
+                                <button type="submit" onclick="confirmation(event)" style="border: none; background: none; color:red;"><i class="fa fa-trash"></i></button>
                             </form>
-                            <a href="{{route('products.edit', $product->id)}}" style="border: none; background: none; color: blue;"><i class="fa fa-edit"></i></a>
+                            <a href="{{route('users.edit', $user->id)}}"><i class="fa fa-edit"></i></a>
                         </td>
                     </tr>
                     @endforeach
@@ -67,7 +55,7 @@
             </table>
         </div>
         <div class="d-flex justify-content-center align-items-center mt-5">
-            {{$products->onEachSide(1)->links()}}
+            {{$users->onEachSide(1)->links()}}
         </div>
 
         <!-- javascript for delete -->

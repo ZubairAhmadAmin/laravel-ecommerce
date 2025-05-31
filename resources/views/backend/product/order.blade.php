@@ -47,11 +47,11 @@
                         <td><img src="{{asset('product/' . $order->product->image)}}" alt="{{$order->product->title}}" width="60" height="60" class="rounded"></td>
                         <td>
                             @if($order->status == 'In Progress')
-                            <span class="badge badge-primary">{{$order->status}}</span>
+                            <span class="badge badge-primary mt-3">{{$order->status}}</span>
                             @elseif($order->status == 'On The Way')
-                            <span class="badge badge-warning">{{$order->status}}</span>
+                            <span class="badge badge-warning mt-3">{{$order->status}}</span>
                             @else
-                            <span class="badge badge-success">{{$order->status}}</span>
+                            <span class="badge badge-success mt-3">{{$order->status}}</span>
                             @endif
                         </td>
                         <td>

@@ -14,22 +14,19 @@ class HomeController extends Controller
     public function index()
     {
         return view('backend.layouts.app')
-                    ->with('users', User::where('usertype', 'user')->get()->count())
-                    ->with('products', Product::all()->count())
-                    ->with('orders', Order::all()->count())
-                    ->with('delivered_orders', Order::where('status', 'Delivered')->count());
+            ->with('users', User::where('usertype', 'user')->get()->count())
+            ->with('products', Product::all()->count())
+            ->with('orders', Order::all()->count())
+            ->with('delivered_orders', Order::where('status', 'Delivered')->count());
     }
 
     public function home()
     {
-        if(Auth::id())
-        {
+        if (Auth::id()) {
             $user = Auth::user();
             $user_id = $user->id;
             $count = Cart::where('user_id', $user_id)->count();
-        }
-        else
-        {
+        } else {
             $count = '';
         }
         return view('home.index')
@@ -39,14 +36,11 @@ class HomeController extends Controller
 
     public function login_home()
     {
-        if (Auth::id()) 
-        {
+        if (Auth::id()) {
             $user = Auth::user();
             $user_id = $user->id;
             $count = Cart::where('user_id', $user_id)->count();
-        }
-        else
-        {
+        } else {
             $count = '';
         }
         return view('home.index')
@@ -54,18 +48,27 @@ class HomeController extends Controller
             ->with('count', $count);
     }
 
+    public function contact_us()
+    {
+        $user = Auth::user()->id;
+        $user_id = $user;
+        $count = Cart::where('user_id', $user_id)->count();
+        
+        return view('home.contact')
+                    ->with('count', $count);
+    }
+
     public function mycart()
     {
-        if(Auth::id())
-        {
+        if (Auth::id()) {
             $user = Auth::user();
             $user_id = $user->id;
             $count = Cart::where('user_id', $user_id)->count();
             $cart = Cart::where('user_id', $user_id)->get();
         }
         return view('home.mycart')
-                    ->with('count', $count)
-                    ->with('carts', $cart);
+            ->with('count', $count)
+            ->with('carts', $cart);
     }
 
     public function remove_cart_product($id)
@@ -99,5 +102,14 @@ class HomeController extends Controller
 
         toastr()->timeOut(3000)->success('Product Ordered Successfully!');
         return redirect()->back();
+    }
+
+    public function my_orders()
+    {
+        $user = Auth::user()->id;
+
+        return view('home.myorder')
+            ->with('count', Cart::where('user_id', $user)->get()->count())
+            ->with('myorders', Order::where('user_id', $user)->get());
     }
 }

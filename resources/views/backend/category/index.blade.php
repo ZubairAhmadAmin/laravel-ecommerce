@@ -22,16 +22,20 @@
             <div class="container-fluid">
                 <form class="row g-3" action="{{route('categories.store')}}" method="post">
                     @csrf
-                    <h1 class="text-white m-3">Add Category</h1>
-                    <div class="col-auto mx-auto mt-4">
-                        <input type="text" name="category" class="bg-light rounded" style="width: 500px; height: 50px;">
-                        <button type="submit" class=" btn btn-primary fw-bolder">Add Category</button>
-                    </div>
+                    <h1 class="text-white m-3 d-flex align-items-center">
+                        Add Category
+                        <div class="col-auto mx-auto mt-3">
+                            <input type="text" name="category" class="bg-light rounded" style="width: 500px; height: 50px;">
+                            <button type="submit" class=" btn btn-primary fw-bolder" style="height: 48px; margin-bottom: 10px">Add Category</button>
+                        </div>
+                    </h1>
                 </form>
             </div>
         </div>
         <div class="row mr-5 ml-5">
             <table class="table table-hover table table-dark">
+                @foreach($categories as $index=>$category)
+                @if($category)
                 <thead>
                     <tr>
                         <th scope="col">No</th>
@@ -67,6 +71,10 @@
                     </tr>
                     @endforeach
                 </tbody>
+                @else
+                <h3 class="text-white">No Contant</h3>
+                @endif
+                @endforeach
             </table>
         </div>
 

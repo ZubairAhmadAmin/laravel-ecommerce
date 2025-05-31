@@ -7,6 +7,7 @@ use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -165,7 +166,7 @@ class ProductController extends Controller
     public function view_orders()
     {
         return view('backend.product.order')
-                    ->with('orders', Order::paginate(5));
+                    ->with('orders', Order::paginate(10));
     }
 
     public function on_the_way($id)

@@ -37,7 +37,7 @@
                 </div>
             </div>
             <div class="col-md-8">
-                <h2 class="my-4 badge badge-info p-3" style="font-size: larger;">Add To Cart Products List</h2> 
+                <h2 class="my-4 badge badge-info p-3" style="font-size: larger; margin-left: 275px">Add To Cart Products List</h2> 
                 @if($carts)
                 <table class="table table-hover border">
                     <thead>
