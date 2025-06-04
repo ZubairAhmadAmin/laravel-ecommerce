@@ -37,6 +37,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/mycart', [HomeController::class, 'mycart'])->name('mycart');
     Route::get('/remove_cart_product/{id}', [HomeController::class, 'remove_cart_product'])->name('remove-product');
     Route::post('/confirm_order', [HomeController::class, 'confirm_order'])->name('confirm-order');
+    Route::controller(HomeController::class)->group(function(){
+        Route::get('stripe/{value}', 'stripe');
+        Route::post('stripe/{value}', 'stripePost')->name('stripe.post');
+    });
     Route::get('/my_orders', [HomeController::class, 'my_orders'])->name('myorders');
     Route::get('/on_the_way/{id}', [ProductController::class, 'on_the_way'])->name('on-the-way');
     Route::get('/delivered/{id}', [ProductController::class, 'delivered'])->name('delivered');

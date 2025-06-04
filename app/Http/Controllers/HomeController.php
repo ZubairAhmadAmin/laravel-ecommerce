@@ -8,6 +8,9 @@ use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Stripe;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class HomeController extends Controller
 {
@@ -111,5 +114,46 @@ class HomeController extends Controller
         return view('home.myorder')
             ->with('count', Cart::where('user_id', $user)->get()->count())
             ->with('myorders', Order::where('user_id', $user)->get());
+    }
+
+    public function stripe($value): View
+    {
+        return view('home.stripe')
+                    ->with('value', $value);
+    }
+
+    public function stripePost(Request $request, $value): RedirectResponse
+    {
+        Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+      
+        Stripe\Charge::create ([
+                "amount" => $value * 100,
+                "currency" => "usd",
+                "source" => $request->stripeToken,
+                "description" => "Test payment from itsolutionstuff.com." 
+        ]);
+
+        $name = Auth::user()->name;
+        $address = Auth::user()->address;
+        $phone = Auth::user()->phone;
+        $user_id = Auth::id();
+
+        $carts = Cart::where('user_id', $user_id)->get();
+
+        foreach ($carts as $cart) {
+            $order = new Order();
+            $order->name = $name;
+            $order->address = $address;
+            $order->phone = $phone;
+            $order->user_id = $user_id;
+            $order->product_id = $cart->product_id;
+            $order->payment_status = 'paid';
+            $order->save();
+
+            $cart->delete();
+        }
+                
+        return redirect()->route('mycart')
+                ->with('success', 'Payment successful!');
     }
 }
